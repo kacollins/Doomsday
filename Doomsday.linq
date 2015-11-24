@@ -2,12 +2,43 @@
 
 void Main()
 {
-	DateTime date = new DateTime(2015, 11, 24);
+	DateTime date = DateTime.Today;
 
 	do
 	{
-		Console.WriteLine(String.Format("{0:d} {1} on {2}.", date, date <= DateTime.Today ? "was" : "will be", GetDayOfWeek(date)));
+		DisplayResult(date);
 	} while (DateTime.TryParse(Console.ReadLine(), out date));
+}
+
+private static void DisplayResult(DateTime date)
+{
+	DayOfWeek result = GetDayOfWeek(date);
+	bool success = result == date.DayOfWeek;
+	string errorMessage = success ? "" : "ERROR: ";
+	string verb = GetVerb(date);
+	string incorrectResult = success ? "" : $", not {result}";
+	string output = $"{errorMessage}{date:yyyy-MM-dd} {verb} on {date.DayOfWeek}{incorrectResult}.";
+	Console.WriteLine(output);
+}
+
+private static string GetVerb(DateTime date)
+{
+	string verb = string.Empty;
+
+	switch (date.CompareTo(DateTime.Today))
+	{
+		case -1:
+			verb = "was";
+			break;
+		case 0:
+			verb = "is";
+			break;
+		case 1:
+			verb = "will be";
+			break;
+	}
+
+	return verb;
 }
 
 private static DayOfWeek GetCenturyAnchor(int year)
