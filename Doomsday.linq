@@ -25,26 +25,6 @@ private static void DisplayResult(DateTime date)
 	Console.WriteLine($"{output}.");
 }
 
-private static string GetVerb(DateTime date)
-{
-	string verb = string.Empty;
-
-	switch (date.CompareTo(DateTime.Today))
-	{
-		case -1:
-			verb = "was";
-			break;
-		case 0:
-			verb = "is";
-			break;
-		case 1:
-			verb = "will be";
-			break;
-	}
-
-	return verb;
-}
-
 private static DayOfWeek GetCenturyAnchor(int year)
 {
 	int dayOffset = 5 * (year / 100 % 4) % 7;
@@ -97,6 +77,8 @@ private static DayOfWeek GetDayOfWeek(DateTime date)
 	return dayOfWeek;
 }
 
+#region Helpers
+
 private static DayOfWeek AddOffsetToDayOfWeek(DayOfWeek input, int dayOffset)
 {
 	int dayIndex = ((int)input + dayOffset) % 7;
@@ -109,6 +91,28 @@ private static DayOfWeek AddOffsetToDayOfWeek(DayOfWeek input, int dayOffset)
 	DayOfWeek output = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), dayIndex.ToString());
 	return output;
 }
+
+private static string GetVerb(DateTime date)
+{
+	string verb = string.Empty;
+
+	switch (date.CompareTo(DateTime.Today))
+	{
+		case -1:
+			verb = "was";
+			break;
+		case 0:
+			verb = "is";
+			break;
+		case 1:
+			verb = "will be";
+			break;
+	}
+
+	return verb;
+}
+
+#endregion
 
 #endregion
 
