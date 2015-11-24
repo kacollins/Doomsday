@@ -27,17 +27,24 @@ private static void DisplayResult(DateTime date)
 
 private static DayOfWeek GetCenturyAnchor(int year)
 {
-	int dayOffset = 5 * (year / 100 % 4) % 7;
-	DayOfWeek centuryAnchor = AddOffsetToDayOfWeek(DayOfWeek.Tuesday, dayOffset);
+	//https://en.wikipedia.org/wiki/Doomsday_rule#Finding_a_century.27s_anchor_day
 
-	//or just memorize these two:
-	switch (year / 100)
+	int century = year / 100;
+
+	DayOfWeek centuryAnchor;
+
+	switch (century)
 	{
 		case 19:
 			centuryAnchor = DayOfWeek.Wednesday;
 			break;
 		case 20:
 			centuryAnchor = DayOfWeek.Tuesday;
+			break;
+		default:
+			//This calculation works for 19 and 20 also, but it's easier to just memorize those.
+			int dayOffset = 5 * (century % 4) % 7;
+			centuryAnchor = AddOffsetToDayOfWeek(DayOfWeek.Tuesday, dayOffset);
 			break;
 	}
 
@@ -46,13 +53,15 @@ private static DayOfWeek GetCenturyAnchor(int year)
 
 private static DayOfWeek GetDoomsdayForYear(int year)
 {
+	//https://en.wikipedia.org/wiki/Doomsday_rule#Finding_a_year.27s_Doomsday
+
 	DayOfWeek centuryAnchor = GetCenturyAnchor(year);
 
-	int twoDigitYear = year % 100;
-	int a = twoDigitYear / 12;
-	int b = twoDigitYear % 12;
-	int c = b / 4;
-	int dayOffset = a + b + c;
+	int twoDigitYear = year % 100; //y in algorithm
+	int yearDividedBy12 = twoDigitYear / 12; //a in algorithm
+	int remainder = twoDigitYear % 12; //b in algorithm
+	int remainderDividedBy4 = remainder / 4; //c in algorithm
+	int dayOffset = yearDividedBy12 + remainder + remainderDividedBy4; //d in algorithm
 
 	DayOfWeek doomsday = AddOffsetToDayOfWeek(centuryAnchor, dayOffset);
 	return doomsday;
@@ -122,6 +131,8 @@ private static List<Doomsday> Doomsdays
 {
 	get
 	{
+		//https://en.wikipedia.org/wiki/Doomsday_rule#Memorable_dates_that_always_land_on_Doomsday
+
 		List<Doomsday> doomsdays = new List<Doomsday>
 		{
 			//the 3rd 3 years in 4 and the 4th in the 4th
@@ -132,6 +143,7 @@ private static List<Doomsday> Doomsdays
 			new Doomsday(2, 28, isLeapYear: false),
 			new Doomsday(2, 29, isLeapYear: true),
 			new Doomsday(3, 0),
+			//isLeapYear = null means it doesn't matter whether it's a leap year, which is true for months other than January and February
 
 			//4, 6, 8, 10, 12
 			new Doomsday(4, 4),
