@@ -13,12 +13,14 @@ void Main()
 private static void DisplayResult(DateTime date)
 {
 	DayOfWeek result = GetDayOfWeek(date);
-	bool success = result == date.DayOfWeek;
-	string errorMessage = success ? "" : "ERROR: ";
-	string verb = GetVerb(date);
-	string incorrectResult = success ? "" : $", not {result}";
-	string output = $"{errorMessage}{date:yyyy-MM-dd} {verb} on {date.DayOfWeek}{incorrectResult}.";
-	Console.WriteLine(output);
+	string output = $"{date:yyyy-MM-dd} {GetVerb(date)} on {date.DayOfWeek}";
+
+	if (result != date.DayOfWeek)
+	{
+		output = $"ERROR: {output}, not {result}";
+	}
+
+	Console.WriteLine($"{output}.");
 }
 
 private static string GetVerb(DateTime date)
