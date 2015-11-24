@@ -82,30 +82,33 @@ private static List<Doomsday> Doomsdays
 	{
 		List<Doomsday> doomsdays = new List<Doomsday>
 		{
-			new Doomsday(1, 3, false),
-			new Doomsday(1, 4, true),
+			//the 3rd 3 years in 4 and the 4th in the 4th
+			new Doomsday(1, 3, isLeapYear: false),
+			new Doomsday(1, 4, isLeapYear: true),
 
-			//last day of February:
-			new Doomsday(2, 28, false),
-			new Doomsday(2, 29, true),
+			//last day of February
+			new Doomsday(2, 28, isLeapYear: false),
+			new Doomsday(2, 29, isLeapYear: true),
 			new Doomsday(3, 0),
 
+			//4, 6, 8, 10, 12
 			new Doomsday(4, 4),
 			new Doomsday(6, 6),
 			new Doomsday(8, 8),
 			new Doomsday(10, 10),
 			new Doomsday(12, 12),
 
-			//working 9 to 5 at 7-11:
+			//working 9 to 5 at 7-11
 			new Doomsday(5, 9),
 			new Doomsday(7, 11),
 			new Doomsday(9, 5),
 			new Doomsday(11, 7),
 
-			//holidays:
-			new Doomsday(2, 14, false),
-			new Doomsday(7, 4),
-			new Doomsday(10, 31)
+			//holidays
+			new Doomsday(2, 14, isLeapYear: false), //Valentine's Day is on doomsday in common years
+			new Doomsday(7, 4), //Independence Day is always on doomsday
+			new Doomsday(10, 31), //Halloween is always on doomsday
+			new Doomsday(12, 26) //Christmas is always the day before doomsday
 		};
 
 		return doomsdays;
