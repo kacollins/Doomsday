@@ -10,6 +10,8 @@ void Main()
 	} while (DateTime.TryParse(Console.ReadLine(), out date));
 }
 
+#region Methods
+
 private static void DisplayResult(DateTime date)
 {
 	DayOfWeek result = GetDayOfWeek(date);
@@ -76,6 +78,42 @@ private static DayOfWeek GetDoomsdayForYear(int year)
 	return doomsday;
 }
 
+private static Doomsday GetDoomsdayForMonth(DateTime date)
+{
+	Doomsday doomsdayForMonth = Doomsdays.First(d => d.Month == date.Month
+		&& (d.IsLeapYear == null || d.IsLeapYear == DateTime.IsLeapYear(date.Year)));
+
+	return doomsdayForMonth;
+}
+
+private static DayOfWeek GetDayOfWeek(DateTime date)
+{
+	DayOfWeek doomsdayForYear = GetDoomsdayForYear(date.Year);
+	Doomsday doomsdayForMonth = GetDoomsdayForMonth(date);
+
+	int dayOffset = date.Day - doomsdayForMonth.Day;
+	DayOfWeek dayOfWeek = AddOffsetToDayOfWeek(doomsdayForYear, dayOffset);
+
+	return dayOfWeek;
+}
+
+private static DayOfWeek AddOffsetToDayOfWeek(DayOfWeek input, int dayOffset)
+{
+	int dayIndex = ((int)input + dayOffset) % 7;
+
+	if (dayIndex < 0)
+	{
+		dayIndex += 7;
+	}
+
+	DayOfWeek output = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), dayIndex.ToString());
+	return output;
+}
+
+#endregion
+
+#region Properties
+
 private static List<Doomsday> Doomsdays
 {
 	get
@@ -115,37 +153,9 @@ private static List<Doomsday> Doomsdays
 	}
 }
 
-private static Doomsday GetDoomsdayForMonth(DateTime date)
-{
-	Doomsday doomsdayForMonth = Doomsdays.First(d => d.Month == date.Month
-		&& (d.IsLeapYear == null || d.IsLeapYear == DateTime.IsLeapYear(date.Year)));
+#endregion
 
-	return doomsdayForMonth;
-}
-
-private static DayOfWeek GetDayOfWeek(DateTime date)
-{
-	DayOfWeek doomsdayForYear = GetDoomsdayForYear(date.Year);
-	Doomsday doomsdayForMonth = GetDoomsdayForMonth(date);
-
-	int dayOffset = date.Day - doomsdayForMonth.Day;
-	DayOfWeek dayOfWeek = AddOffsetToDayOfWeek(doomsdayForYear, dayOffset);
-
-	return dayOfWeek;
-}
-
-private static DayOfWeek AddOffsetToDayOfWeek(DayOfWeek input, int dayOffset)
-{
-	int dayIndex = ((int)input + dayOffset) % 7;
-
-	if (dayIndex < 0)
-	{
-		dayIndex += 7;
-	}
-
-	DayOfWeek output = (DayOfWeek)Enum.Parse(typeof(DayOfWeek), dayIndex.ToString());
-	return output;
-}
+#region Classes
 
 class Doomsday
 {
@@ -160,3 +170,5 @@ class Doomsday
 		IsLeapYear = isLeapYear;
 	}
 }
+
+#endregion
